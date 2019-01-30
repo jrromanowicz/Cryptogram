@@ -1,0 +1,14 @@
+@CHARSET "ISO-8859-1";
+.header {
+	padding: .5em;
+	margin-left: 3em;
+	margin-bottom: 1em;
+	margin-top: 1em;
+	border: 1px solid navy;
+	background-color: #3B589E;
+	width: 12em;
+}
+.header h1 {
+	color: white;
+	text-shadow: 0 0 .3em gold;
+}

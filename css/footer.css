@@ -1,0 +1,37 @@
+@CHARSET "ISO-8859-1";
+/* 
+A CSS sticky footer, after code by Ryan Fait
+
+This is the basic CSS you need along with the empty push
+div and the content div around the page (except for the footer).
+
+I suggest that you leave the * { margin: 0; } code in while testing 
+because margins do have a tendency to mess things up a bit.
+*/
+
+* {
+   margin: 0;
+}
+
+html, body {
+   height: 100%;
+}
+
+/* ALL page content goes in the content element */
+#content {
+   min-height: 100%;          /* IE7 & later, and other browsers */
+   height: auto !important ;  /* pre-IE6 */
+   height: 100%;              /* IE6 */
+   /* the bottom margin is the negative value of the footer's height */
+   margin: 0 auto -2.5em;
+}
+
+/* push provides space at the bottom of the content for the footer */
+.footer, .push {
+   height: 2.5em; /* .push must be the same height as .footer */
+}
+
+/* TROUBLESHOOTING
+   Vertical margins might cause a problem with the layout. If you want space 
+   between paragraphs or headers, use padding instead of margin.
+*/

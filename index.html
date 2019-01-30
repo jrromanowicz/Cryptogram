@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Cryptogram</title>
+   <meta charset="UTF-8">
+   <meta name="author" content="Jack Romanowicz">
+   <meta name="revised" content="V2.00 Jack Romanowicz Wed 12 Dec 2018 17:01 PST">
+   <meta name="keywords" content="Cryptogram,puzzle,brainteaser,newspaper">
+   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+   <link rel="stylesheet" media="all" type="text/css" href="./css/cryptogram.css" />
+   <link rel="stylesheet" media="all" type="text/css" href="./css/footer.css" />
+   <link rel="stylesheet" media="all" type="text/css" href="./css/header.css" />
+   <link rel="stylesheet" media="all" type="text/css" href="./css/cssmenu.css">
+   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+   <!--   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> -->
+</head>
+<body>
+  <div id="content">
+    <div class="header">
+      <h1>Cryptogram</h1>
+      <span style="font-size:.6em">Version 2.01</span>
+    </div>
+    <div id="cssmenu">
+      <ul>
+	     <li id="Play"><a href="#">Play</a></li>
+        <li id="Reset"><a href="#">Reset Subs</a></li>
+	     <li id="Clear"><a href="#">Clear All</a></li>
+    	  <li id="Undo"><a href="#">Undo</a></li>
+        <li class="has-sub"><a href="#">Help</a>
+	       <ul>
+    		   <li id="Help"><a href="#">Help</a></li>
+    	      <li id="About"><a href="#">About</a></li>
+        	 </ul>
+	     </li>
+      </ul>
+    </div>
+    <label for="cryptotext">Encrypted Text:</label>
+    <input type="text" id="cryptotext" 
+          placeholder="Type the encrypted text here, then click Play">
+    <br/>
+    <hr>
+    <div id="text">
+      <div id="protochar" class="char">
+        <span class="solution centertext"></span><br/>
+        <span class="problem centertext">&nbsp;</span> 
+      </div> <!-- #protochar -->
+    </div> <!-- #text -->
+    <div id="subSelectContainer">
+      <div id='subSelectDiv'>
+        <span id='subSelectLabel'> </span>
+        <div id="subSelect">
+		    <span class="subSel">&nbsp;</span>
+		    <span class="subSel" id="A">A</span>
+          <span class="subSel" id="B">B</span>
+		    <span class="subSel" id="C">C</span>
+		    <span class="subSel" id="D">D</span>
+		    <span class="subSel" id="E">E</span>
+		    <span class="subSel" id="F">F</span>
+		    <span class="subSel" id="G">G</span>
+		    <span class="subSel" id="H">H</span>
+		    <span class="subSel" id="I">I</span>
+		    <span class="subSel" id="J">J</span>
+		    <span class="subSel" id="K">K</span>
+		    <span class="subSel" id="L">L</span>
+		    <span class="subSel" id="M">M</span>
+		    <span class="subSel" id="N">N</span>
+		    <span class="subSel" id="O">O</span>
+		    <span class="subSel" id="P">P</span>
+		    <span class="subSel" id="Q">Q</span>
+		    <span class="subSel" id="R">R</span>
+		    <span class="subSel" id="S">S</span>
+		    <span class="subSel" id="T">T</span>
+		    <span class="subSel" id="U">U</span>
+		    <span class="subSel" id="V">V</span>
+		    <span class="subSel" id="W">W</span>
+		    <span class="subSel" id="X">X</span>
+		    <span class="subSel" id="Y">Y</span>
+		    <span class="subSel" id="Z">Z</span>
+        </div> <!-- subSelect -->
+      </div> <!-- #subSelectDiv -->
+    </div> <!-- #subSelectContainer -->
+    <hr>
+    <div class="push"></div>
+  </div> <!-- content -->
+  <div class="footer">
+    <hr>
+    <div class="centertext">
+      &copy;&nbsp;2017-<span id="thisYear"></span> Jack Romanowicz. All rights reserved. Usage for non-commercial purposes granted.
+    </div>
+  </div><!-- footer -->  <script type="text/javascript" src="js/cryptogram.js"></script>
+</body>
+</html>

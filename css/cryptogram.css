@@ -1,0 +1,70 @@
+h1 {
+	font-weight: bold;
+	color: blue;
+}
+hr {
+	clear: both;
+}
+#content {
+   font-family: "Open Sans", sans-serif;
+   padding-left: 1em;
+   padding-right: 1em;
+}
+#cryptotext {
+   width: 40%;
+   margin-top: 1em;
+   margin-bottom: .5em;
+}
+.word {
+	display: inline-block;
+}
+.char {
+   font-family: Courier, monospace;
+   font-size: 150%;
+	width: 1em;
+	margin-right: .1em;
+   display: inline-block;
+}
+.currValue {
+	display: none;
+}
+.problem {
+   color: blue;
+   cursor: pointer;
+}
+.centertext {
+   width: 100%;
+   text-align: center;
+}
+#subSelectContainer {
+   position: absolute;
+   left: 0;
+   top: 0;
+   height: 100%;
+   width: 100%;
+   background: rgba(255, 255, 255, 0.5);
+   z-index: 1024;
+   display:none;
+}
+#subSelectDiv {
+	padding: .4em;
+	position: absolute;
+	left: 10%;
+	top: 40%;
+	background-color: #00AAAA;
+	max-width: 35em;
+}
+.subSel {
+	text-align: center;
+   display: inline-block;
+   cursor: pointer;
+   border: 1px solid blue;
+   margin-right: .1em;
+   margin-bottom: .1em;
+   width: 1em;
+   font-size: 250%;
+   background-color: white;
+}
+.text {
+	display: inline-block;
+}
