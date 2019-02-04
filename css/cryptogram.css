@@ -49,10 +49,10 @@ hr {
 #subSelectDiv {
 	padding: .4em;
 	position: absolute;
-	left: 10%;
-	top: 40%;
+	left: 30%;
+	top: 30%;
 	background-color: #00AAAA;
-	max-width: 35em;
+	max-width: 70%;
 }
 .subSel {
 	text-align: center;
