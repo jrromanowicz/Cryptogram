@@ -16,17 +16,30 @@ function showSubSelectDiv(ev) {
 
 function subSelClick(ev) {
 	var ssd = $('#subSpan').text(), // what's being substituted for
-		subc = $(this).text(); // what's being substituted
+//	subc = $(this).text(); // what's being substituted
+  	subc = $(this).id; // what's being substituted
 	subChange(ssd, subc);
 	$('#subSelectContainer').hide();
 } // subSelectChange
 
 // handle a substitution character change
 function subChange(prob, soln) {
-	var i, p, prevValue,
+	var i, p, prevValue, currValue,
 	  match = false,
 	  crypt = $('.problem'); // get all the problem letter spans
 	
+	if (2 == soln.length) { // if re-using a letter, first clear all using it now
+		solutions = $('.solution'); // get all the solution spans
+		soln = soln.charAt(0); // strip the trailing 'S'
+		for (i = 0; i < solutions.length; i++) {
+			p = $(solutions[i]);
+			if (soln == p.text()) {
+				p.text(' '); // clear old value
+			}
+		}
+		$('#'+soln).show();
+		$('#'+soln+'S').hide();
+	}
 	for (i = 0; i < crypt.length; i++) {
 		p = $(crypt[i]);  // make into jquery object
 		if (prob == p.text()) {
@@ -132,6 +145,7 @@ function begin() {
 	$('.subSel').click(subSelClick);
 	$('#subSelect').click(function (ev) {ev.stopPropagation();})
 	$('#subSelectDiv').click(function (ev) {ev.stopPropagation();})
+	$('#subSelectedDiv').click(function (ev) {ev.stopPropagation();})
 	$('#subSelectContainer').click(function () {$('#subSelectContainer').hide();});
 }
 
