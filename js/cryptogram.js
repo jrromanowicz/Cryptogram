@@ -9,53 +9,65 @@ function resetSub(which) {
 	}
 } // resetSub()
 
-function showSubSelectDiv(ev) {
+function showSubSelectDiv() { // called when a problem character is clicked
 	$('#subSelectLabel').html('Select what to substitute for <span id="subSpan">'+this.innerHTML+'</span>:');
 	$('#subSelectContainer').show();
 } // showSubSelect()
 
-function subSelClick(ev) {
-	var ssd = $('#subSpan').text(), // what's being substituted for
-//	subc = $(this).text(); // what's being substituted
-  	subc = $(this).id; // what's being substituted
-	subChange(ssd, subc);
+function subSelClick() { // called if a char in #subSelectContainer is clicked
+	var checkChar, probChar, solnText,
+		probChar = $('#subSpan').text(), // what's being substituted for
+	solnText = this.id; // what's being substituted
+	if (2 == solnText.length) {
+		checkChar = solnText.charAt(1);
+	} else {
+		checkChar = solnText;
+	}
+	if (checkChar == probChar) {
+		alert("The solution letter can't be the same as the cryptogram letter!");
+		return;
+	}
+	subChange(probChar, solnText);
 	$('#subSelectContainer').hide();
 } // subSelectChange
 
 // handle a substitution character change
 function subChange(prob, soln) {
-	var i, p, prevValue, currValue,
-	  match = false,
-	  crypt = $('.problem'); // get all the problem letter spans
+	var i, p, s, oldProb, prevSoln, solutions, 
+		match = false,
+		crypt = $('.problem'); // get all the problem letter spans
 	
 	if (2 == soln.length) { // if re-using a letter, first clear all using it now
 		solutions = $('.solution'); // get all the solution spans
-		soln = soln.charAt(0); // strip the trailing 'S'
+		soln = soln.charAt(1); // skip the leading 'S'
 		for (i = 0; i < solutions.length; i++) {
-			p = $(solutions[i]);
-			if (soln == p.text()) {
-				p.text(' '); // clear old value
+			s = $(solutions[i]);
+			if (soln == s.text()) {
+				s.text(' '); // clear old value
+				oldProb = s.parent().find('.problem').text();
 			}
 		}
-		$('#'+soln).show();
-		$('#'+soln+'S').hide();
+		cryptoHistory.push({probChar: oldProb, oldVal: soln, newVal: ' '})
 	}
 	for (i = 0; i < crypt.length; i++) {
 		p = $(crypt[i]);  // make into jquery object
 		if (prob == p.text()) {
 			match = true;
-			prevValue = p.parent().find('.solution').text();
+			prevSoln = p.parent().find('.solution').text();
 			p.parent().find('.solution').text(soln);
 		} // if problem char matches (TRUE branch)
 	} // for each problem char element
 	if (match) {
 		if (soln != ' ') { // if it's not the space...
-		  $('#'+soln).hide();  // don't allow re-use of this substitute
+			$('#'+soln).hide();  // don't allow re-use of this substitute
+			$('#S'+soln).show(); // show the un-use button
+			$('#subSelectedDiv').show();
 		}
-		if (prevValue != ' ') {
-		  $('#'+prevValue).show();  // re-enable use of previous substitute
-	    }
-		cryptoHistory.push({probChar: prob, oldVal: prevValue, newVal: soln});
+		if (prevSoln != ' ') {
+			$('#'+prevSoln).show();  // re-enable use of previous substitute
+			$('#S'+prevSoln).hide();  // not in use anymore, hide un-use button
+		}
+		cryptoHistory.push({probChar: prob, oldVal: prevSoln, newVal: soln});
 		$('#Undo').show();
 	} else {
 		alert("There are no '"+prob+"'s in the encrypted text.");
@@ -63,18 +75,20 @@ function subChange(prob, soln) {
 	} 
 } // subChange()
 
-function undo(ev) {
+function undo() {
 	var hist = cryptoHistory.pop(); //for conciseness
 	subChange(hist.probChar, hist.oldVal); // do the deed
 	cryptoHistory.pop(); // avoid an infinite loop
+	if (cryptoHistory.length == 0) {
+		$('#Undo').hide();
+	}
 } // undo()
 
-function startPlay(ev) {
-	var i, cl, thisChar,
-	  txt = $('#cryptotext').val().toUpperCase(),
-	  proto = $('#protochar'), 
-	  text = $('#text'),
-	  word;
+function startPlay() {
+	var i, cl, thisChar, word,
+		txt = $('#cryptotext').val().toUpperCase(),
+		proto = $('#protochar'), 
+		text = $('#text');
 	
 	if (txt.length < 1) {
 		alert("You need to enter the encrypted text before beginning play.");
@@ -87,7 +101,7 @@ function startPlay(ev) {
 		cl.find('.problem').text(thisChar);
 		if (/[A-Z]/.test(thisChar)) {
 			cl.find('.problem').click(showSubSelectDiv); // and pop up the subselect if clicked on
-		} // if the character is a alphabetic (TRUE branch)
+		} // if the character is alphabetic (TRUE branch)
 		else {
 			cl.find('.solution').text(thisChar); // not alpha char, just put in solution
 			cl.find('.solution').addClass('fixed');
@@ -104,11 +118,11 @@ function startPlay(ev) {
 	$('#Undo').hide();
 } // startPlay()
 
-function showAbout(ev) {
+function showAbout() {
 	alert('Cryptogram\nBy Jack Romanowicz\n Version 2.00\n29 December 2018');
 } // showAbout()
 
-function showHelp(ev) {
+function showHelp() {
 	alert("Enter the encrypted text into the Encrypted Text box.\n\n-- Click the 'Play' menu item to begin. " +
 			"\n-- Click on or touch a letter in the lower section to pop up a substitution selector. " +
 			"\n-- 'Reset Subs' undoes all the substitutions but the encrypted text remains." +
@@ -119,11 +133,13 @@ function showHelp(ev) {
 } // showHelp()
 
 // set app to initial state
-function clearAll(ev) {
+function clearAll() {
 	$('#cryptotext').val('');
 	$('.selectsub').show(); 
 	resetSub('all'); 
 	$('[id^=char]').remove();
+	$('.subSeled').hide()
+	$('#subSelectedDiv').hide();
 	$('#subSelectContainer').hide();
 	$('#cryptotext').focus();
 	cryptoHistory = [];
@@ -143,6 +159,7 @@ function begin() {
 	$('#Help').click(showHelp);
 	// script the select elements
 	$('.subSel').click(subSelClick);
+	$('.subSeled').click(subSelClick);
 	$('#subSelect').click(function (ev) {ev.stopPropagation();})
 	$('#subSelectDiv').click(function (ev) {ev.stopPropagation();})
 	$('#subSelectedDiv').click(function (ev) {ev.stopPropagation();})
