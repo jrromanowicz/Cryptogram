@@ -14,10 +14,11 @@ function showSubSelectDiv() { // called when a problem character is clicked
 	$('#subSelectContainer').show();
 } // showSubSelect()
 
-function subSelClick() { // called if a char in #subSelectContainer is clicked
+function subSelClick(ev) { // called if a char in #subSelectContainer is clicked
 	var checkChar, probChar, solnText,
 		probChar = $('#subSpan').text(), // what's being substituted for
 	solnText = this.id; // what's being substituted
+	ev.stopPropagation(); // no one else needs to see this event
 	if (2 == solnText.length) {
 		checkChar = solnText.charAt(1);
 	} else {
@@ -127,8 +128,8 @@ function showHelp() {
 			"\n-- Click on or touch a letter in the lower section to pop up a substitution selector. " +
 			"\n-- 'Reset Subs' undoes all the substitutions but the encrypted text remains." +
 			"\n-- 'Clear All' undoes all substitutions and clears the encrypted text." +
-			"\n-- 'Undo' (if shown) undoes previous substitutions in the reverse order they were done." +
-			"\n-- If a substitution letter is in use it will be removed from the substitution selector." +
+			"\n-- 'Undo' (if active) undoes previous substitutions in the reverse order they were done." +
+			"\n-- If a substitution letter is in use it can still be chosen from the bottom of the selector." +
 			"\n-- To fix an error in the encrypted text, just correct it and hit 'Play' again.");
 } // showHelp()
 
