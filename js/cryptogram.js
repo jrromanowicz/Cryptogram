@@ -126,8 +126,8 @@ function showAbout() {
 function showHelp() {
 	alert("Enter the encrypted text into the Encrypted Text box.\n\n-- Click the 'Play' menu item to begin. " +
 			"\n-- Click on or touch a letter in the lower section to pop up a substitution selector. " +
-			"\n-- 'Reset Subs' undoes all the substitutions but the encrypted text remains." +
 			"\n-- 'Clear All' undoes all substitutions and clears the encrypted text." +
+			"\n-- 'Reset Subs' undoes all the substitutions but the encrypted text remains." +
 			"\n-- 'Undo' (if active) undoes previous substitutions in the reverse order they were done." +
 			"\n-- If a substitution letter is in use it can still be chosen from the bottom of the selector." +
 			"\n-- To fix an error in the encrypted text, just correct it and hit 'Play' again.");
@@ -136,16 +136,20 @@ function showHelp() {
 // set app to initial state
 function clearAll() {
 	$('#cryptotext').val('');
+	$('[id^=char]').remove();
+	$('#cryptotext').focus();
+	resetSubs();
+} // clearAll
+
+function resetSubs() {
 	$('.selectsub').show(); 
 	resetSub('all'); 
-	$('[id^=char]').remove();
 	$('.subSeled').hide()
 	$('#subSelectedDiv').hide();
 	$('#subSelectContainer').hide();
-	$('#cryptotext').focus();
 	cryptoHistory = [];
 	$('#Undo').hide();
-} // clearAll()
+} // resetSubs()
 
 function begin() {
 	var d = new Date;
@@ -153,7 +157,7 @@ function begin() {
 	clearAll(); // set initial state
 	// set up menu item links
 	$('#Clear').click(clearAll);
-	$('#Reset').click(function() {resetSub('all');});
+	$('#Reset').click(resetSubs);
 	$('#Play').click(startPlay);
 	$('#About').click(showAbout);
 	$('#Undo').click(undo),

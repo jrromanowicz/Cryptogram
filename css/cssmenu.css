@@ -133,7 +133,7 @@
     width: 4px;
 }
 #cssmenu.align-right ul ul li.has-sub > a::after {
-    border-color: #dddddd -moz-use-text-color -moz-use-text-color #dddddd;
+    border-color: #dddddd currentColor currentColor #dddddd;
     border-style: solid none none solid;
     border-width: 1px 0 0 1px;
     left: 10px;
