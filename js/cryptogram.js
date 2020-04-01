@@ -3,9 +3,11 @@ var cryptoHistory = [];
 function resetSub(which) {
 	if ('all' === which) {
 		$('.solution').text(' '); // clear all the solution chars
-		$('.subSel').show(); // show all the substitutions
+		$('.subSeled').hide(); // hide previously selected 
+		$('.subSel').show(); // make all substitute chars available
 	} else if (/[A-Z]/.test(which)) {
 		$('#'+which).show();
+		$('#S'+which).hide();
 	}
 } // resetSub()
 
@@ -33,31 +35,30 @@ function subSelClick(ev) { // called if a char in #subSelectContainer is clicked
 } // subSelectChange
 
 // handle a substitution character change
+// prob is the #subSpan of the puzzle char to be solved
+// soln is the .subSel/.subSeled of the solution character
 function subChange(prob, soln) {
 	var i, p, s, oldProb, prevSoln, solutions, 
 		match = false,
 		crypt = $('.problem'); // get all the problem letter spans
 	
 	if (2 == soln.length) { // if re-using a letter, first clear all using it now
-		solutions = $('.solution'); // get all the solution spans
 		soln = soln.charAt(1); // skip the leading 'S'
-		for (i = 0; i < solutions.length; i++) {
-			s = $(solutions[i]);
-			if (soln == s.text()) {
-				s.text(' '); // clear old value
-				oldProb = s.parent().find('.problem').text();
+		$('.solution').each(function(index) { // get all the solution spans
+			if (soln == $(this).text()) {
+				$(this).text(' '); // clear old value
+				oldProb = $(this).parent().find('.problem').text();
 			}
-		}
+		});
 		cryptoHistory.push({probChar: oldProb, oldVal: soln, newVal: ' '})
 	}
-	for (i = 0; i < crypt.length; i++) {
-		p = $(crypt[i]);  // make into jquery object
-		if (prob == p.text()) {
+	$('.problem').each(function(index) {
+		if (prob == $(this).text()) {
 			match = true;
-			prevSoln = p.parent().find('.solution').text();
-			p.parent().find('.solution').text(soln);
+			prevSoln = $(this).parent().find('.solution').text();
+			$(this).parent().find('.solution').text(soln);
 		} // if problem char matches (TRUE branch)
-	} // for each problem char element
+	}); // for each problem char element
 	if (match) {
 		if (soln != ' ') { // if it's not the space...
 			$('#'+soln).hide();  // don't allow re-use of this substitute
