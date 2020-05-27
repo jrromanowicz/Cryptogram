@@ -121,7 +121,7 @@ function startPlay() {
 } // startPlay()
 
 function showAbout() {
-	alert('Cryptogram\nBy Jack Romanowicz\n Version 2.00\n29 December 2018');
+	alert('Cryptogram\nBy Jack Romanowicz\n Version '+version+'\n'+versionDate);
 } // showAbout()
 
 function showHelp() {
@@ -155,13 +155,14 @@ function resetSubs() {
 function begin() {
 	var d = new Date;
 	$('#thisYear').text(d.getFullYear());
+	$('#version').text('Version '+version);
 	clearAll(); // set initial state
 	// set up menu item links
 	$('#Clear').click(clearAll);
 	$('#Reset').click(resetSubs);
 	$('#Play').click(startPlay);
 	$('#About').click(showAbout);
-	$('#Undo').click(undo),
+	$('#Undo').click(function (ev) {ev.stopPropagation(); undo();})
 	$('#Help').click(showHelp);
 	// script the select elements
 	$('.subSel').click(subSelClick);
