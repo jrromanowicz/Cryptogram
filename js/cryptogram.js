@@ -7,7 +7,7 @@ function resetSub(which) {
 		$('.subSel').show(); // make all substitute chars available
 	} else if (/[A-Z]/.test(which)) {
 		$('#'+which).show();
-		$('#S'+which).hide();
+		$('#'+which+'S').hide();
 	}
 } // resetSub()
 
@@ -17,15 +17,11 @@ function showSubSelectDiv() { // called when a problem character is clicked
 } // showSubSelect()
 
 function subSelClick(ev) { // called if a char in #subSelectContainer is clicked
-	var checkChar, probChar, solnText,
+	var checkChar, solnText,
 		probChar = $('#subSpan').text(), // what's being substituted for
 	solnText = this.id; // what's being substituted
 	ev.stopPropagation(); // no one else needs to see this event
-	if (2 == solnText.length) {
-		checkChar = solnText.charAt(1);
-	} else {
-		checkChar = solnText;
-	}
+	checkChar = solnText.charAt(0);
 	if (checkChar == probChar) {
 		alert("The solution letter can't be the same as the cryptogram letter!");
 		return;
@@ -35,17 +31,17 @@ function subSelClick(ev) { // called if a char in #subSelectContainer is clicked
 } // subSelectChange
 
 // handle a substitution character change
-// prob is the #subSpan of the puzzle char to be solved
-// soln is the .subSel/.subSeled of the solution character
+// prob is the puzzle character being solved
+// soln is the .subSel/.subSeled element of the solution character
 function subChange(prob, soln) {
 	var i, p, s, oldProb, prevSoln, solutions, 
+		solnchar = soln.charAt(0),
 		match = false,
 		crypt = $('.problem'); // get all the problem letter spans
 	
 	if (2 == soln.length) { // if re-using a letter, first clear all using it now
-		soln = soln.charAt(1); // skip the leading 'S'
 		$('.solution').each(function(index) { // get all the solution spans
-			if (soln == $(this).text()) {
+			if (solnchar == $(this).text()) {
 				$(this).text(' '); // clear old value
 				oldProb = $(this).parent().find('.problem').text();
 			}
@@ -60,29 +56,31 @@ function subChange(prob, soln) {
 		} // if problem char matches (TRUE branch)
 	}); // for each problem char element
 	if (match) {
-		if (soln != ' ') { // if it's not the space...
-			$('#'+soln).hide();  // don't allow re-use of this substitute
-			$('#S'+soln).show(); // show the un-use button
+		if (solnchar != ' ') { // if it's not the space...
+			$('#'+solnchar).hide();  // don't allow re-use of this button
+			$('#'+solnchar+'S').show(); // show the in-use button
 			$('#subSelectedDiv').show();
 		}
 		if (prevSoln != ' ') {
 			$('#'+prevSoln).show();  // re-enable use of previous substitute
-			$('#S'+prevSoln).hide();  // not in use anymore, hide un-use button
+			$('#'+prevSoln+'S').hide();  // not in use anymore, hide in-use button
 		}
 		cryptoHistory.push({probChar: prob, oldVal: prevSoln, newVal: soln});
-		$('#Undo').show();
+		$('#Undo').css("visibility", "visible");
 	} else {
 		alert("There are no '"+prob+"'s in the encrypted text.");
 		resetSub(prob);
 	} 
 } // subChange()
 
-function undo() {
+// triggered by Undo menu item
+function undo(ev) {
 	var hist = cryptoHistory.pop(); //for conciseness
 	subChange(hist.probChar, hist.oldVal); // do the deed
+	ev.stopPropagation(); // no one else needs this event
 	cryptoHistory.pop(); // avoid an infinite loop
 	if (cryptoHistory.length == 0) {
-		$('#Undo').hide();
+		$('#Undo').css("visibility", "hidden");
 	}
 } // undo()
 
@@ -117,7 +115,7 @@ function startPlay() {
 	} // for each character in the cryptotext
 	resetSub('all'); // clear all substitutions
 	cryptoHistory = [];
-	$('#Undo').hide();
+	$('#Undo').css("visibility", "hidden");
 } // startPlay()
 
 function showAbout() {
@@ -149,7 +147,7 @@ function resetSubs() {
 	$('#subSelectedDiv').hide();
 	$('#subSelectContainer').hide();
 	cryptoHistory = [];
-	$('#Undo').hide();
+	$('#Undo').css("visibility", "hidden");
 } // resetSubs()
 
 function begin() {
@@ -162,7 +160,7 @@ function begin() {
 	$('#Reset').click(resetSubs);
 	$('#Play').click(startPlay);
 	$('#About').click(showAbout);
-	$('#Undo').click(function (ev) {ev.stopPropagation(); undo();})
+	$('#Undo').click(undo)
 	$('#Help').click(showHelp);
 	// script the select elements
 	$('.subSel').click(subSelClick);
