@@ -46,13 +46,13 @@ function subChange(prob, soln) {
 				oldProb = $(this).parent().find('.problem').text();
 			}
 		});
-		cryptoHistory.push({probChar: oldProb, oldVal: soln, newVal: ' '})
+		cryptoHistory.push({probChar: oldProb, oldVal: solnchar, newVal: ' '})
 	}
 	$('.problem').each(function(index) {
 		if (prob == $(this).text()) {
 			match = true;
 			prevSoln = $(this).parent().find('.solution').text();
-			$(this).parent().find('.solution').text(soln);
+			$(this).parent().find('.solution').text(solnchar);
 		} // if problem char matches (TRUE branch)
 	}); // for each problem char element
 	if (match) {
@@ -65,7 +65,7 @@ function subChange(prob, soln) {
 			$('#'+prevSoln).show();  // re-enable use of previous substitute
 			$('#'+prevSoln+'S').hide();  // not in use anymore, hide in-use button
 		}
-		cryptoHistory.push({probChar: prob, oldVal: prevSoln, newVal: soln});
+		cryptoHistory.push({probChar: prob, oldVal: prevSoln, newVal: solnchar});
 		$('#Undo').css("visibility", "visible");
 	} else {
 		alert("There are no '"+prob+"'s in the encrypted text.");
