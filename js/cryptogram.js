@@ -32,7 +32,7 @@ function subSelClick(ev) { // called if a char in #subSelectContainer is clicked
 
 // handle a substitution character change
 // prob is the puzzle character being solved
-// soln is the .subSel/.subSeled element of the solution character
+// soln is the id of the chosen .subSel/.subSeled element
 function subChange(prob, soln) {
 	var i, p, s, oldProb, prevSoln, solutions, 
 		solnchar = soln.charAt(0),
@@ -46,7 +46,7 @@ function subChange(prob, soln) {
 				oldProb = $(this).parent().find('.problem').text();
 			}
 		});
-		cryptoHistory.push({probChar: oldProb, oldVal: solnchar, newVal: ' '})
+		cryptoHistory.push({probChar: oldProb, oldVal: soln, newVal: ' '})
 	}
 	$('.problem').each(function(index) {
 		if (prob == $(this).text()) {
