@@ -1,32 +1,18 @@
 var cryptoHistory = [];
 
-function resetSub(which) {
-	if ('all' === which) {
-		$('.solution').text(' '); // clear all the solution chars
-		$('.subSeled').hide(); // hide previously selected 
-		$('.subSel').show(); // make all substitute chars available
-	} else if (/[A-Z]/.test(which)) {
-		$('#'+which).show();
-		$('#'+which+'S').hide();
-	}
-} // resetSub()
-
 function showSubSelectDiv() { // called when a problem character is clicked
-	$('#subSelectLabel').html('Select what to substitute for <span id="subSpan">'+this.innerHTML+'</span>:');
+	$('#subSelectLabel').html('Select the letter to substitute for <span id="subSpan">'+this.innerHTML+'</span>:');
 	$('#subSelectContainer').show();
 } // showSubSelect()
 
 function subSelClick(ev) { // called if a char in #subSelectContainer is clicked
-	var checkChar, solnText,
-		probChar = $('#subSpan').text(), // what's being substituted for
-	solnText = this.id; // what's being substituted
+	var probChar = $('#subSpan').text(); // what's being substituted for
 	ev.stopPropagation(); // no one else needs to see this event
-	checkChar = solnText.charAt(0);
-	if (checkChar == probChar) {
+	if (this.id == probChar) {
 		alert("The solution letter can't be the same as the cryptogram letter!");
 		return;
-	}
-	subChange(probChar, solnText);
+	} // if trying to substitute the same character (TRUE branch)
+	subChange(probChar, this.id);
 	$('#subSelectContainer').hide();
 } // subSelectChange
 
@@ -34,42 +20,39 @@ function subSelClick(ev) { // called if a char in #subSelectContainer is clicked
 // prob is the puzzle character being solved
 // soln is the id of the chosen .subSel/.subSeled element
 function subChange(prob, soln) {
-	var i, p, s, oldProb, prevSoln, solutions, 
-		solnchar = soln.charAt(0),
-		match = false,
-		crypt = $('.problem'); // get all the problem letter spans
+	var oldProb, prevSoln, 
+		match = false;
 	
-	if (2 == soln.length) { // if re-using a letter, first clear all using it now
-		$('.solution').each(function(index) { // get all the solution spans
-			if (solnchar == $(this).text()) {
+   // if re-using a non-blank letter, first clear all using it now
+	if ((soln != ' ') && $('#'+soln).hasClass("inuse")) {
+		$('.solution').each(function() { // get all the solution spans
+			if (soln == $(this).text()) {
 				$(this).text(' '); // clear old value
 				oldProb = $(this).parent().find('.problem').text();
 			}
 		});
 		cryptoHistory.push({probChar: oldProb, oldVal: soln, newVal: ' '})
-	}
-	$('.problem').each(function(index) {
+	} // if non-blank soln char was already in use (TRUE branch)
+   
+	$('.problem').each(function() {
 		if (prob == $(this).text()) {
 			match = true;
 			prevSoln = $(this).parent().find('.solution').text();
-			$(this).parent().find('.solution').text(solnchar);
+			$(this).parent().find('.solution').text(soln);
 		} // if problem char matches (TRUE branch)
 	}); // for each problem char element
 	if (match) {
-		if (solnchar != ' ') { // if it's not the space...
-			$('#'+solnchar).hide();  // don't allow re-use of this button
-			$('#'+solnchar+'S').show(); // show the in-use button
-			$('#subSelectedDiv').show();
+		if (soln != ' ') { // if it's not the space...
+			$('#'+soln).addClass("inuse");  // highlight used solution chars
 		}
 		if (prevSoln != ' ') {
-			$('#'+prevSoln).show();  // re-enable use of previous substitute
-			$('#'+prevSoln+'S').hide();  // not in use anymore, hide in-use button
+			$('#'+prevSoln).removeClass("inuse");  // un-highlight previous substitute
 		}
-		cryptoHistory.push({probChar: prob, oldVal: prevSoln, newVal: solnchar});
+		cryptoHistory.push({probChar: prob, oldVal: prevSoln, newVal: soln});
 		$('#Undo').css("visibility", "visible");
 	} else {
 		alert("There are no '"+prob+"'s in the encrypted text.");
-		resetSub(prob);
+		$('#'+prob).removeClass("inuse");
 	} 
 } // subChange()
 
@@ -113,7 +96,7 @@ function startPlay() {
 		}
 		word.append(cl);
 	} // for each character in the cryptotext
-	resetSub('all'); // clear all substitutions
+	resetSubs(); // clear all substitutions
 	cryptoHistory = [];
 	$('#Undo').css("visibility", "hidden");
 } // startPlay()
@@ -126,9 +109,9 @@ function showHelp() {
 	alert("Enter the encrypted text into the Encrypted Text box.\n\n-- Click the 'Play' menu item to begin. " +
 			"\n-- Click on or touch a letter in the lower section to pop up a substitution selector. " +
 			"\n-- 'Clear All' undoes all substitutions and clears the encrypted text." +
-			"\n-- 'Reset Subs' undoes all the substitutions but the encrypted text remains." +
+			"\n-- 'Reset Subs' undoes all the substitutions but keeps the encrypted text." +
 			"\n-- 'Undo' (if active) undoes previous substitutions in the reverse order they were done." +
-			"\n-- If a substitution letter is in use it can still be chosen from the bottom of the selector." +
+			"\n-- If a substitution letter is in use (it will be blue) it can still be chosen." +
 			"\n-- To fix an error in the encrypted text, just correct it and hit 'Play' again.");
 } // showHelp()
 
@@ -140,11 +123,10 @@ function clearAll() {
 	resetSubs();
 } // clearAll
 
-function resetSubs() {
-	$('.selectsub').show(); 
-	resetSub('all'); 
-	$('.subSeled').hide()
-	$('#subSelectedDiv').hide();
+// reset all substitutions
+function resetSubs() { 
+   $('.solution').text(' '); // clear all the solution chars
+   $('.inuse').removeClass("inuse"); // make all substitute chars available
 	$('#subSelectContainer').hide();
 	cryptoHistory = [];
 	$('#Undo').css("visibility", "hidden");
@@ -164,10 +146,8 @@ function begin() {
 	$('#Help').click(showHelp);
 	// script the select elements
 	$('.subSel').click(subSelClick);
-	$('.subSeled').click(subSelClick);
 	$('#subSelect').click(function (ev) {ev.stopPropagation();})
 	$('#subSelectDiv').click(function (ev) {ev.stopPropagation();})
-	$('#subSelectedDiv').click(function (ev) {ev.stopPropagation();})
 	$('#subSelectContainer').click(function () {$('#subSelectContainer').hide();});
 }
 

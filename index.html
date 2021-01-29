@@ -6,7 +6,7 @@
    <meta name="author" content="Jack Romanowicz">
    <meta name="revised" content="V3.22 Jack Romanowicz Mon 31 Dec 2020 15:31 PST">
    <script type="text/javascript">
-   var version='3.22', versionDate='31 Dec 2020';
+     var version='4.00', versionDate='28 Jan 2021';
    </script>
    <meta name="keywords" content="Cryptogram,puzzle,brainteaser,newspaper">
    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
@@ -35,7 +35,7 @@
         	 </ul>
 	     </li>
       </ul>
-    </div>
+    </div> <!-- #cssmenu --> 
     <label for="cryptotext">Encrypted Text:</label>
     <input type="text" id="cryptotext" 
           placeholder="Type the encrypted text here, then click Play">
@@ -50,6 +50,7 @@
     <div id="subSelectContainer">
       <div id='subSelectDiv'>
         <span id='subSelectLabel'> </span>
+        <hr>
         <div id="subSelect">
 		    <span class="subSel">&nbsp;</span>
 		    <span class="subSel" id="A">A</span>
@@ -79,48 +80,21 @@
 		    <span class="subSel" id="Y">Y</span>
 		    <span class="subSel" id="Z">Z</span>
         </div> <!-- subSelect -->
-        <hr>
-        <div id='subSelectedDiv'>
-          <span id='subSelectedLabel'>Letters already used (can be reused):</span>
-          <div id="subSelected">
-            <span class="subSeled" id="AS">A</span>
-            <span class="subSeled" id="BS">B</span>
-            <span class="subSeled" id="CS">C</span>
-            <span class="subSeled" id="DS">D</span>
-            <span class="subSeled" id="ES">E</span>
-            <span class="subSeled" id="FS">F</span>
-            <span class="subSeled" id="GS">G</span>
-            <span class="subSeled" id="HS">H</span>
-            <span class="subSeled" id="IS">I</span>
-            <span class="subSeled" id="JS">J</span>
-            <span class="subSeled" id="KS">K</span>
-            <span class="subSeled" id="LS">L</span>
-            <span class="subSeled" id="MS">M</span>
-            <span class="subSeled" id="NS">N</span>
-            <span class="subSeled" id="OS">O</span>
-            <span class="subSeled" id="PS">P</span>
-            <span class="subSeled" id="QS">Q</span>
-            <span class="subSeled" id="RS">R</span>
-            <span class="subSeled" id="SS">S</span>
-            <span class="subSeled" id="TS">T</span>
-            <span class="subSeled" id="US">U</span>
-            <span class="subSeled" id="VS">V</span>
-            <span class="subSeled" id="WS">W</span>
-            <span class="subSeled" id="XS">X</span>
-            <span class="subSeled" id="YS">Y</span>
-            <span class="subSeled" id="ZS">Z</span>
-          </div> <!-- subSelected -->
-        </div> <!-- #subSelectedDiv -->
       </div> <!-- #subSelectDiv -->
     </div> <!-- #subSelectContainer -->
-    <hr>
+    <div id="verifyReselect">
+      The letter <span id="usedLetter"></span> is already in use. Confirm<br/>
+      that you want to re-use it.<br/><br/>
+      <input type="button" id="yesbutton" value="Yes"><input type="button" id="nobutton" value="No">
+     </div> <!-- div verifyReselect -->
     <div class="push"></div>
-  </div> <!-- content -->
+  </div> <!-- #content -->
+  <script type="text/javascript" src="js/cryptogram.js"></script>
   <div class="footer">
     <hr>
     <div class="centertext">
-      &copy;&nbsp;2017-<span id="thisYear"></span> Jack Romanowicz. All rights reserved. Usage for non-commercial purposes granted.
+      &copy;&nbsp;2017-<span id="thisYear"></span> Jack Romanowicz. All rights reserved. Use granted for non-commercial purposes.
     </div>
-  </div><!-- footer -->  <script type="text/javascript" src="js/cryptogram.js"></script>
+  </div><!-- footer -->
 </body>
 </html>

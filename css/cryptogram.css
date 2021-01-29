@@ -25,9 +25,6 @@ hr {
 	margin-right: .1em;
    display: inline-block;
 }
-.currValue {
-	display: none;
-}
 .problem {
    color: blue;
    cursor: pointer;
@@ -35,6 +32,17 @@ hr {
 .centertext {
    width: 100%;
    text-align: center;
+}
+.inuse {
+	color: blue;
+}
+#verifyReselect {
+   position: absolute;
+   left: 20%;
+   top: 15%;
+   background-color: #00AAAA;
+   z-index: 2048;
+   display:none;
 }
 #subSelectContainer {
    position: absolute;
@@ -53,11 +61,11 @@ hr {
 	top: 15%;
 	background-color: #00AAAA;
 }
-#subSelect, #subSelected {
+#subSelect {
 	font-size: 275%;
 	width: 7em;
 }
-.subSel, .subSeled {
+.subSel {
 	text-align: center;
    display: inline-block;
    cursor: pointer;
